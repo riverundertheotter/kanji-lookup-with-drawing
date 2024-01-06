@@ -5,6 +5,7 @@ import svgList from "./svg-list.json";
 
 const App: React.FC = () => {
   const svgRef = useRef<SVGSVGElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [showStrokeNumbers, setShowStrokeNumbers] = useState(true);
   const [textElementsData, setTextElementsData] = useState<
     d3.BaseType[] | null
@@ -131,12 +132,78 @@ const App: React.FC = () => {
     }
   }, [animatePaths]);
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    let drawing = false;
+
+    function startDrawing(e: MouseEvent) {
+      drawing = true;
+      draw(e);
+    }
+
+    function erase() {
+      if (ctx && canvas) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    function draw(e: MouseEvent) {
+      if (!drawing || !ctx) return;
+      if (canvas) {
+        ctx.lineWidth = 5;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = 'black';
+  
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+  
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+      }   
+    }
+
+    function stopDrawing() {
+      drawing = false;
+      if (ctx) {
+        ctx.beginPath();
+      }
+    }
+
+    if (canvas) {
+      canvas.addEventListener('mousedown', startDrawing);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDrawing);
+      canvas.addEventListener('dblclick', erase);
+    }
+
+    return () => {
+      if (canvas) {
+        canvas.removeEventListener('mousedown', startDrawing);
+        canvas.removeEventListener('mousemove', draw);
+        canvas.removeEventListener('mouseup', stopDrawing);
+        canvas.removeEventListener('dblclick', erase);
+      }
+    };
+  }, []);
+
   const handleToggleStrokeNumbers = () => {
     setShowStrokeNumbers(!showStrokeNumbers);
   };
 
   return (
     <div className="App">
+      <h1>Kanji Learning Tool</h1>
+      <canvas
+        ref={canvasRef}
+        width="500"
+        height="500"
+        style={{ border: "1px solid #000000" }}
+      >
+      </canvas>
       <div>
         <label>
           <input
@@ -166,6 +233,7 @@ const App: React.FC = () => {
           onChange={handleCharacterInput}
         />
       </div>
+
       <svg ref={svgRef} width="109" height="109" />
       <div
         style={{
