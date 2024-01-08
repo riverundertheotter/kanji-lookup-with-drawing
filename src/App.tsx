@@ -38,7 +38,6 @@ const App: React.FC = () => {
     if (!svgRef.current || !inputHex) {
       return;
     }
-
     const svgUrl = `/kanjivg/kanji/${inputHex}.svg`;
 
     // Fetch and render the SVG
@@ -47,6 +46,7 @@ const App: React.FC = () => {
       .then((data) => {
         svgRef.current!.innerHTML = data;
         const svgElement = d3.select(svgRef.current).select("svg");
+        svgElement.attr("width", 500).attr("height", 500);
         const strokeNumbers = svgElement.select(
           `#kvg\\:StrokeNumbers_${inputHex}`
         );
@@ -201,12 +201,15 @@ const App: React.FC = () => {
       <div className = "Kanji">
       <canvas
         className="Kanji-Canvas"
-        width="109px"
-        height="109px"
+        width="500px"
+        height="500px"
         ref={canvasRef}
       >
       </canvas>
-      <svg ref={svgRef} className = "Kanji-SVG"/>
+      <svg ref={svgRef} className = "Kanji-SVG" 
+      width="500px"
+      height="500px"
+      />
       </div>
       <div>
         <label>

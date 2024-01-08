@@ -10,8 +10,8 @@ position absolute?
   grid-template-columns: 1fr; /* Single column */
   grid-template-rows: 1fr; /* Single row */
   position: relative; /* Required for absolute positioning of children */
-  width: 109px; /* Set the width of the container */
-  height: 109px; /* Set the height of the container */
+  width: 500px; /* Set the width of the container */
+  height: 500px; /* Set the height of the container */
 }
 
 .Kanji-Canvas, .Kanji-SVG {
@@ -21,8 +21,6 @@ position absolute?
 
 .Kanji-Canvas {
   position: absolute; /* Overlay positioning */
-  width: 109px;
-  height: 109px;
   z-index: 2; /* Higher z-index to be on top */
   border: 1px solid #000000;
 }
