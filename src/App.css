@@ -1,6 +1,39 @@
-.App {
-  text-align: center;
+/* 
+canvas on top using z index
+put them both in a div (tsx) together
+1st item in div doesn't take up space
+position absolute?
+*/
+
+.Kanji {
+  display: grid;
+  grid-template-columns: 1fr; /* Single column */
+  grid-template-rows: 1fr; /* Single row */
+  position: relative; /* Required for absolute positioning of children */
+  width: 109px; /* Set the width of the container */
+  height: 109px; /* Set the height of the container */
 }
+
+.Kanji-Canvas, .Kanji-SVG {
+  grid-column: 1; /* Both elements in the same column */
+  grid-row: 1; /* Both elements in the same row */
+}
+
+.Kanji-Canvas {
+  position: absolute; /* Overlay positioning */
+  width: 109px;
+  height: 109px;
+  z-index: 2; /* Higher z-index to be on top */
+  border: 1px solid #000000;
+}
+
+.Kanji-SVG {
+  /* SVG styling as needed, it will be under the canvas */
+  z-index: 1; /* Lower z-index */
+  opacity: .33;
+}
+
+
 
 .App-logo {
   height: 40vmin;

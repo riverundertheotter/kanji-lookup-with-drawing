@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 
 import svgList from "./svg-list.json";
+import './App.css';
 
 const App: React.FC = () => {
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -197,13 +198,16 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <h1>Kanji Learning Tool</h1>
+      <div className = "Kanji">
       <canvas
+        className="Kanji-Canvas"
+        width="109px"
+        height="109px"
         ref={canvasRef}
-        width="500"
-        height="500"
-        style={{ border: "1px solid #000000" }}
       >
       </canvas>
+      <svg ref={svgRef} className = "Kanji-SVG"/>
+      </div>
       <div>
         <label>
           <input
@@ -234,7 +238,7 @@ const App: React.FC = () => {
         />
       </div>
 
-      <svg ref={svgRef} width="109" height="109" />
+      
       <div
         style={{
           height: "200px",
